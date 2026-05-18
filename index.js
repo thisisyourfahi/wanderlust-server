@@ -22,6 +22,24 @@ async function run() {
         await client.connect();
         const db = client.db('waderlust_db');
         const destinationsCollection = db.collection('destinations');
+        const usersCollection = db.collection('user');
+        const bookingsCollection = db.collection('bookings');
+
+        // get user
+        app.get('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const user = await usersCollection.findOne(query);
+
+            res.send(user);
+        })
+
+        // add booking
+        app.post('/destinations/:id/book', async (req, res) => {
+            const bookingInfo = req.body;
+            const result = await bookingsCollection.insertOne(bookingInfo);
+            res.json(result);
+        })
 
         // add destination
         app.post('/add-destination', async (req, res) => {
@@ -38,7 +56,6 @@ async function run() {
             const query = { _id: new ObjectId(id) };
             const destination = await destinationsCollection.findOne(query);
 
-            console.log('Fetched destination:', destination);
             res.json(destination);
         })
 
