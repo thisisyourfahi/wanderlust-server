@@ -55,12 +55,23 @@ async function run() {
         app.patch('/destinations/:id', async (req, res) => {
             const { id } = req.params;
             const updatedDestination = req.body;
+            
 
             const result = await destinationsCollection.updateOne({
                 _id: new ObjectId(id)
             }, {
                 $set: updatedDestination
             })
+            res.json(result);
+        })
+
+        // delete destination
+        app.delete('/destinations/:id', async (req, res) => {
+            const {id} = req.params;
+            console.log('requested delete for id:', id);
+
+            const result = await destinationsCollection.deleteOne({ _id: new ObjectId(id) });
+            console.log('Delete result:', result);
             res.json(result);
         })
 
