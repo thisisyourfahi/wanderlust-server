@@ -57,6 +57,15 @@ async function run() {
             res.json(bookings);
         })
 
+        // delete a particular booking
+        app.delete('/my-bookings/delete/:id', async (req, res) => {
+            const id = req.params.id;
+            const deleteBooking = { _id: new ObjectId(id)};
+            // console.log('delete booking:', bookingInfo);
+            const result = await bookingsCollection.deleteOne(deleteBooking);
+            res.json(result)
+        })
+
         // add destination
         app.post('/add-destination', async (req, res) => {
             const newDestination = req.body;
