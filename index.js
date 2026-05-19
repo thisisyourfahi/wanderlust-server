@@ -41,6 +41,22 @@ async function run() {
             res.json(result);
         })
 
+        // get all bookings
+        app.get('/my-bookings', async(req, res) => {
+            const cursor = bookingsCollection.find();
+            const allBookings = await cursor.toArray();
+
+            res.json(allBookings);
+        })
+
+        // get all bookings of a user
+        app.get('/my-bookings/:id', async (req, res) => {
+            const reqUser = req.params.id;
+            const cursor = bookingsCollection.find({userID: reqUser})
+            const bookings = await cursor.toArray();
+            res.json(bookings);
+        })
+
         // add destination
         app.post('/add-destination', async (req, res) => {
             const newDestination = req.body;
